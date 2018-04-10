@@ -1,19 +1,22 @@
+import './firebase'
 import Vue from 'vue'
 import App from './App.vue'
 import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
 import Routes from './routes'
-// import BootstrapVue from 'bootstrap-vue'
-// import 'bootstrap/dist/css/bootstrap.css'
-// import 'bootstrap-vue/dist/bootstrap-vue.css'
+import VueFire from 'vuefire'
 
-import Element from 'element-ui'
+// import Element from 'element-ui'
 
-Vue.use(Element);
+import jQuery from 'jquery'
+global.jQuery = jQuery;
+let Bootstrap = require('bootstrap');
+import 'bootstrap/dist/css/bootstrap.css'
 
+// Vue.use(Element);
+Vue.use(VueFire);
 Vue.use(VueResource);
 Vue.use(VueRouter);
-// Vue.use(BootstrapVue);
 
 export const bus = new Vue();
 

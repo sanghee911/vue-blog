@@ -7,10 +7,10 @@
 
 <script>
 
-import AddBlog from './components/AddBlog'
-import ShowBlogs from './components/ShowBlogs'
-import ListBlogs from './components/ListBlogs'
-import SingleBlog from './components/SingleBlog'
+// import AddBlog from './components/AddBlog'
+// import ShowBlogs from './components/ShowBlogs'
+// import ListBlogs from './components/ListBlogs'
+// import SingleBlog from './components/SingleBlog'
 import Header from './components/Header'
 
 

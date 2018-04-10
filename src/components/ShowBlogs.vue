@@ -1,21 +1,28 @@
 <template>
+<div class="container">
   <div id="show-blogs" v-theme="'wide'">
     <h1>All Blog Articles</h1>
-    <div v-for="blog in filteredBlogs" class="single-blog">
+    <!--<div v-for="blog in filteredBlogs" class="single-blog">-->
+    <div v-for="blog in posts" v-bind:key="blog['.key']" class="single-blog">
       <div class="title-wrapper">
         <router-link v-bind:to="'/blog/' + blog.id">
           <h2 class="blog-title">{{ blog.title | to-uppercase }}</h2>
         </router-link>
-        <span class="delete" v-on:click.prevent="test">delete</span><button>teset</button>
+        <!--<span class="delete" v-on:click="removePost(blog['.key'])">delete</span>-->
+        <button type="button" class="btn btn-outline-danger btn-sm delete-post" v-on:click="removePost(blog['.key'])">delete</button>
+        <span class="badge badge-pill badge-secondary category" v-for="category in blog.categories">{{ category }}</span>
       </div>
+      <p class="author">Written by: {{ blog.author }}</p>
       <article>{{ blog.content | snippet }}</article>
     </div>
   </div>
+</div>
 </template>
 
 <script>
   import searchMixin from '../mixins/searchMixin'
   import { bus } from '../main'
+  import { postsRef } from '../firebase'
 
   export default {
     name: "show-blogs",
@@ -26,29 +33,32 @@
       }
     },
     methods: {
-      test: function () {
-        console.log('teste')
+      removePost: function (key) {
+        postsRef.child(key).remove();
       }
     },
     created() {
-      this.$http.get('https://vue-blog-307cc.firebaseio.com/posts.json').then(
-      function (data) {
-        return data.json();
-      }).then(function (data) {
-        var blogsArray = [];
-        for (let key in data) {
-          console.log(data[key]);
-          data[key].id = key;
-          blogsArray.push(data[key]);
-        }
-        this.blogs = blogsArray;
-      });
+      // this.$http.get('https://vue-blog-307cc.firebaseio.com/posts.json').then(
+      // function (data) {
+      //   return data.json();
+      // }).then(function (data) {
+      //   var blogsArray = [];
+      //   for (let key in data) {
+      //     console.log(data[key]);
+      //     data[key].id = key;
+      //     blogsArray.push(data[key]);
+      //   }
+      //   this.blogs = blogsArray;
+      // });
       bus.$on('searchChanged', (data) =>{
         this.search = data;
       })
     },
     computed: {
 
+    },
+    firebase: {
+      posts: postsRef
     },
     filters: {
       toUppercase(value) {
@@ -88,10 +98,11 @@
     display: inline-block;
     vertical-align: middle;
     color: #294646;
+    border-bottom: 1px solid transparent;
   }
   .blog-title:hover {
-    color: #06afdf;
-    border-bottom: 1px solid #06afdf;
+    color: #0081df;
+    border-bottom: 1px solid #0081df;
   }
   .single-blog {
     box-shadow: 0 0 3px 1px rgba(0,0,0,0.2);
@@ -101,25 +112,17 @@
   .single-blog a {
     text-decoration: none;
   }
-  .single-blog .delete {
-    font-size: small;
-    vertical-align: middle;
-    /*border: 1px solid orangered;*/
-    padding: 5px;
-    border-radius: 3px;
-    border: 1px solid orangered;
-    color: orangered;
-    background-color: white;
-    box-sizing: border-box;
-    margin-left: 20px;
+
+  .delete-post {
+    margin-left: 10px;
+    margin-right: 30px;
   }
-  .delete:hover {
-    border: 1px solid orangered;
-    background-color: orangered;
-    color: white;
-    cursor: pointer;
+  .category {
+    margin-right: 5px;
   }
-  .delete:focus {
-    outline: none;
+  .author {
+    font-size: 0.8em;
+    color: limegreen;
+    margin-bottom: 10px;
   }
 </style>

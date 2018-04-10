@@ -1,47 +1,80 @@
 <template>
-  <div id="add-blog">
-    <h2>Add a New Blog Post</h2>
-    <form v-if="!submitted">
-      <label for="">Blog Title</label>
-      <input type="text" required v-model.lazy="blog.title" class="form-control">
-      <label for="">Blog Content:</label>
-      <textarea name="" id="" cols="30" rows="10" v-model.lazy="blog.content"></textarea>
-      <div id="checkboxes">
-        <label for="ninjas">Ninjas</label>
-        <input id="ninjas" type="checkbox" value="ninjas" v-model="blog.categories">
-        <label for="wizards">Wizards</label>
-        <input id="wizards" type="checkbox" value="wizards" v-model="blog.categories">
-        <label for="mario">Mario</label>
-        <input id="mario" type="checkbox" value="mario" v-model="blog.categories">
-        <label for="cheese">Cheese</label>
-        <input id="cheese" type="checkbox" value="cheese" v-model="blog.categories">
+  <div class="container">
+    <div id="add-blog">
+      <h2>Add a New Blog Post</h2>
+      <form v-if="!submitted">
+        <div class="form-group row">
+          <label for="title" class="col-sm-2 col-form-label">Blog Title:</label>
+          <div class="col-sm-10">
+            <input type="text" required v-model.lazy="blog.title" class="form-control" id="title">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="content" class="col-sm-2 col-form-label">Blog Content:</label>
+          <div class="col-sm-10">
+            <textarea class="form-control" v-model.lazy="blog.content" id="content"></textarea>
+          </div>
+        </div>
+        <fieldset class="form-group">
+          <div class="row">
+            <legend class="col-form-label col-sm-2 pt-0">Categories:</legend>
+            <div class="col-sm-10">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="python" value="Python" v-model="blog.categories">
+                <label class="form-check-label" for="python">
+                  Python
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="javascript" value="JavaScript" v-model="blog.categories">
+                <label class="form-check-label" for="javascript">
+                  JavaScript
+                </label>
+              </div>
+              <div class="form-check disabled">
+                <input class="form-check-input" type="checkbox" id="ruby" value="Ruby" v-model="blog.categories">
+                <label class="form-check-label" for="ruby">
+                  Ruby
+                </label>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <div class="form-group row">
+          <label for="author" class="col-sm-2 col-form-label">Author:</label>
+          <div class="col-sm-10">
+            <select id="author" class="form-control form-control-sm" v-model="blog.author">
+              <option v-for="author in authors">{{ author }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row text-center">
+          <div class="col-12">
+            <button type="button" class="col-4 text-center btn btn-outline-primary btn-sm" v-on:click.prevent="post">Add Blog</button>
+          </div>
+        </div>
+      </form>
+      <div v-if="submitted">
+        <h3>Post has been added!</h3>
       </div>
-      <label for="">Author:</label>
-      <select v-model="blog.author">
-        <option v-for="author in authors">{{ author }}</option>
-      </select>
-      <p>
-        <button v-on:click.prevent="post">Add Blog</button>
-      </p>
-    </form>
-    <div v-if="submitted">
-      <h3>Post has been added!</h3>
-    </div>
-    <div id="preview">
-      <h3>Preview Blog</h3>
-      <p>Blog title: {{ blog.title }}</p>
-      <p>Blog content:</p>
-      <p>{{ blog.content }}</p>
-      <p>Blog Categories:</p>
-      <ul>
-        <li v-for="category in blog.categories">{{ category }}</li>
-      </ul>
-      <p>Author: {{ blog.author }}</p>
+      <!--<div id="preview">-->
+        <!--<h3>Preview Blog</h3>-->
+        <!--<p>Blog title: {{ blog.title }}</p>-->
+        <!--<p>Blog content:</p>-->
+        <!--<p>{{ blog.content }}</p>-->
+        <!--<p>Blog Categories:</p>-->
+        <!--<ul>-->
+          <!--<li v-for="category in blog.categories">{{ category }}</li>-->
+        <!--</ul>-->
+        <!--<p>Author: {{ blog.author }}</p>-->
+      <!--</div>-->
     </div>
   </div>
 </template>
 
 <script>
+  import { postsRef } from '../firebase'
+
   export default {
     name: "add-blog",
     data() {
@@ -58,7 +91,8 @@
     },
     methods: {
       post: function () {
-        this.$http.post('https://vue-blog-307cc.firebaseio.com/posts.json', this.blog).then(function(data) {
+        // this.$http.post('https://vue-blog-307cc.firebaseio.com/posts.json', this.blog).then(function(data) {
+          postsRef.push(this.blog).then((data) => {
           console.log(data);
           this.submitted = true;
         })
@@ -69,42 +103,42 @@
 
 <style scoped>
 
-  #add-blog * {
-    box-sizing: border-box;
-  }
+  /*#add-blog * {*/
+    /*box-sizing: border-box;*/
+  /*}*/
 
-  #add-blog {
-    margin: 20px auto;
-    max-width: 500px;
-  }
+  /*#add-blog {*/
+    /*!*margin: 20px auto;*!*/
+    /*!*max-width: 500px;*!*/
+  /*}*/
 
-  label {
-    display: block;
-    margin: 20px 0 10px;
-  }
+  /*label {*/
+    /*display: block;*/
+    /*margin: 20px 0 10px;*/
+  /*}*/
 
-  input[type="text"], textarea {
-    display: block;
-    width: 100%;
-  }
+  /*input[type="text"], textarea {*/
+    /*display: block;*/
+    /*width: 100%;*/
+  /*}*/
 
-  #preview {
-    padding: 10px 20px;
-    border: 1px dotted #ccc;
-    margin: 30px 0;
-  }
+  /*#preview {*/
+    /*padding: 10px 20px;*/
+    /*border: 1px dotted #ccc;*/
+    /*margin: 30px 0;*/
+  /*}*/
 
-  h3 {
-    margin-top: 10px;
-  }
+  /*h3 {*/
+    /*margin-top: 10px;*/
+  /*}*/
 
-  #checkboxes input {
-    display: inline-block;
-    margin-right: 10px;
-  }
+  /*#checkboxes input {*/
+    /*display: inline-block;*/
+    /*margin-right: 10px;*/
+  /*}*/
 
-  #checkboxes label {
-    display: inline-block;
-  }
+  /*#checkboxes label {*/
+    /*display: inline-block;*/
+  /*}*/
 
 </style>
