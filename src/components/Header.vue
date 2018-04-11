@@ -18,8 +18,8 @@
           <!--<input id="search-box" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" v-model="search">-->
         <!--</li>-->
       </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" v-model="search">
+      <form class="form-inline my-2 my-lg-0" v-show="$route.path==='/' ? true : false">
+        <input class="form-control mr-sm-2 form-control-sm" type="search" placeholder="Search" aria-label="Search" v-model="search">
       </form>
     </div>
   </nav>
@@ -99,6 +99,20 @@
   }
   .navbar {
     background-color: #c3f0ff;
+    /*border: 2px solid cyan;*/
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+  .navbar-light .navbar-nav .nav-link:hover,
+  .navbar-light .navbar-nav .nav-link:focus {
+    color: #3c5817;
+  }
+  .nav-link {
+    color: #3c5817;
+  }
+  .nav-link.router-link-exact-active {
+  color: #3c5817;
+  font-weight: bold;
   }
 
 </style>

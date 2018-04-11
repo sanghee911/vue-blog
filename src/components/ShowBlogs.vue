@@ -2,14 +2,16 @@
 <div class="container">
   <div id="show-blogs" v-theme="'wide'">
     <h1>All Blog Articles</h1>
-    <!--<div v-for="blog in filteredBlogs" class="single-blog">-->
-    <div v-for="blog in posts" v-bind:key="blog['.key']" class="single-blog">
+    <div v-for="blog in filteredBlogs" v-bind:key="blog['.key']" class="single-blog">
       <div class="title-wrapper">
-        <router-link v-bind:to="'/blog/' + blog.id">
+        <router-link v-bind:to="'/blog/' + blog['.key']">
           <h2 class="blog-title">{{ blog.title | to-uppercase }}</h2>
         </router-link>
-        <!--<span class="delete" v-on:click="removePost(blog['.key'])">delete</span>-->
-        <button type="button" class="btn btn-outline-danger btn-sm delete-post" v-on:click="removePost(blog['.key'])">delete</button>
+        <router-link v-bind:to="'/blog/' + blog['.key']">
+          <button type="button" class="btn btn-outline-success btn-sm view-post btn-post">View</button>
+        </router-link>
+        <button type="button" class="btn btn-outline-info btn-sm edit-post btn-post" v-on:click="editPost(blog['.key'])" >Edit</button>
+        <button type="button" class="btn btn-outline-danger btn-sm delete-post btn-post" v-on:click="removePost(blog['.key'])">delete</button>
         <span class="badge badge-pill badge-secondary category" v-for="category in blog.categories">{{ category }}</span>
       </div>
       <p class="author">Written by: {{ blog.author }}</p>
@@ -29,6 +31,7 @@
     data() {
       return {
         blogs: [],
+        posts: [],
         search: ""
       }
     },
@@ -52,13 +55,15 @@
       // });
       bus.$on('searchChanged', (data) =>{
         this.search = data;
-      })
+      });
+//      this.blogs = posts
+      console.log(this.posts)
     },
     computed: {
 
     },
     firebase: {
-      posts: postsRef
+      blogs: postsRef
     },
     filters: {
       toUppercase(value) {
@@ -113,9 +118,11 @@
     text-decoration: none;
   }
 
-  .delete-post {
-    margin-left: 10px;
-    margin-right: 30px;
+  .btn-post {
+    margin-right: 10px;
+  }
+  .view-post {
+    margin-left: 30px;
   }
   .category {
     margin-right: 5px;

@@ -12,7 +12,7 @@
         <div class="form-group row">
           <label for="content" class="col-sm-2 col-form-label">Blog Content:</label>
           <div class="col-sm-10">
-            <textarea class="form-control" v-model.lazy="blog.content" id="content"></textarea>
+            <textarea class="form-control" v-model="blog.content" ref="content" id="content"></textarea>
           </div>
         </div>
         <fieldset class="form-group">
@@ -85,6 +85,7 @@
           categories: [],
           author: ""
         },
+        content: '',
         authors: ["Sanghee Lee", "Atsuko Nakayama", "Curtis Lee"],
         submitted: false
       }
@@ -95,7 +96,22 @@
           postsRef.push(this.blog).then((data) => {
           console.log(data);
           this.submitted = true;
+          window.location.href="/" ;
         })
+      }
+    },
+    watch: {
+      'blog.content': function () {
+        let el = this.$refs.content;
+//        console.log(this.blog.content);
+        console.log(el);
+//        var el = this;
+        setTimeout(function(){
+          el.style.cssText = 'height:auto; padding:0';
+          // for box-sizing other than "content-box" use:
+          // el.style.cssText = '-moz-box-sizing:content-box';
+          el.style.cssText = 'height:' + el.scrollHeight + 'px';
+        },0);
       }
     }
   }

@@ -1,17 +1,21 @@
 <template>
-  <div id="single-blog">
+  <div id="single-blog" v-cloak>
     <h1>{{ blog.title }}</h1>
+    <p>
+      <span class="badge badge-pill badge-secondary category" v-for="category in blog.categories">{{ category }}</span>
+    </p>
+    <p class="author">Written by {{ blog.author }}</p>
     <article>{{ blog.content }}</article>
-    <h3>Author: {{ blog.author }}</h3>
-    <h3>Categories:</h3>
     <ul>
-      <li v-for="category in blog.categories">{{ category }}</li>
+
     </ul>
   </div>
 
 </template>
 
 <script>
+  import { postsRef } from '../firebase'
+
   export default {
     name: "single-blog",
     data() {
@@ -36,5 +40,13 @@
   #single-blog {
     max-width: 960px;
     margin: 0 auto;
+  }
+  [v-cloak] {
+    display: none
+  }
+  .author {
+    font-size: 0.8em;
+    color: limegreen;
+    margin-bottom: 10px;
   }
 </style>
