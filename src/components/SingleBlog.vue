@@ -5,7 +5,7 @@
       <span class="badge badge-pill badge-secondary category" v-for="category in blog.categories">{{ category }}</span>
     </p>
     <p class="author">Written by {{ blog.author }}</p>
-    <article>{{ blog.content }}</article>
+    <article v-html="blog.content"></article>
     <ul>
 
     </ul>

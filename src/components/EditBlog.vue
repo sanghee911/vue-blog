@@ -12,7 +12,8 @@
         <div class="form-group row">
           <label for="content" class="col-sm-2 col-form-label">Blog Content:</label>
           <div class="col-sm-10">
-            <textarea class="form-control" v-model="blog.content" ref="content" id="content"></textarea>
+            <vue-editor v-model="blog.content" id="content"></vue-editor>
+            <!--<textarea class="form-control" v-model="blog.content" ref="content" id="content"></textarea>-->
           </div>
         </div>
         <fieldset class="form-group">
@@ -55,7 +56,7 @@
         </div>
       </form>
       <div v-if="submitted">
-        <h3>Post has been added!</h3>
+        <h3>Post has been edited!</h3>
       </div>
     </div>
   </div>
@@ -63,6 +64,8 @@
 
 <script>
   import { postsRef } from '../firebase'
+  import { db } from '../firebase'
+  import { VueEditor } from 'vue2-editor'
 
   export default {
     name: "edit-blog",
@@ -75,23 +78,27 @@
       }
     },
     created: function () {
-//      this.$http.get('https://vue-blog-307cc.firebaseio.com/posts/' + this.id + '.json').then(
-//        function (data) {
-//          console.log(data.json());
-//          return data.json();
-//        }
-//      ).then(function (data) {
-//        this.blog = data;
-//      })
-      this.blog = postsRef.child(this.id);
-      console.log(this.blog)
+      this.blog = this.blogsObj[this.id];
     },
     methods: {
       edit: function () {
-        postsRef.child(this.id).update(this.blog);
-        window.location.href="/";
+        postsRef.child(this.id).update(this.blog).then((data)=>{
+          this.submitted = true;
+          window.location.href="/";
+        });
       }
     },
+    firebase: {
+      blogs: db.ref('posts'),
+      blogsObj: {
+        source: db.ref('posts'),
+        asObject: true
+      }
+    },
+    components: {
+      VueEditor
+    },
+
   }
 </script>
 

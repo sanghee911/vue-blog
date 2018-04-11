@@ -18,7 +18,7 @@
         <span class="badge badge-pill badge-secondary category" v-for="category in blog.categories">{{ category }}</span>
       </div>
       <p class="author">Written by: {{ blog.author }}</p>
-      <article>{{ blog.content | snippet }}</article>
+      <article v-html="$options.filters.snippet(blog.content)"></article>
     </div>
   </div>
 </div>

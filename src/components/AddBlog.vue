@@ -12,7 +12,7 @@
         <div class="form-group row">
           <label for="content" class="col-sm-2 col-form-label">Blog Content:</label>
           <div class="col-sm-10">
-            <textarea class="form-control" v-model="blog.content" ref="content" id="content"></textarea>
+            <vue-editor v-model="blog.content" id="content"></vue-editor>
           </div>
         </div>
         <fieldset class="form-group">
@@ -57,23 +57,13 @@
       <div v-if="submitted">
         <h3>Post has been added!</h3>
       </div>
-      <!--<div id="preview">-->
-        <!--<h3>Preview Blog</h3>-->
-        <!--<p>Blog title: {{ blog.title }}</p>-->
-        <!--<p>Blog content:</p>-->
-        <!--<p>{{ blog.content }}</p>-->
-        <!--<p>Blog Categories:</p>-->
-        <!--<ul>-->
-          <!--<li v-for="category in blog.categories">{{ category }}</li>-->
-        <!--</ul>-->
-        <!--<p>Author: {{ blog.author }}</p>-->
-      <!--</div>-->
     </div>
   </div>
 </template>
 
 <script>
   import { postsRef } from '../firebase'
+  import { VueEditor } from 'vue2-editor'
 
   export default {
     name: "add-blog",
@@ -113,7 +103,11 @@
           el.style.cssText = 'height:' + el.scrollHeight + 'px';
         },0);
       }
-    }
+    },
+    components: {
+      VueEditor
+    },
+
   }
 </script>
 
