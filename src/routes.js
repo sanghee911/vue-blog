@@ -1,10 +1,12 @@
 import ShowBlogs from './components/ShowBlogs'
 import AddBlog from './components/AddBlog'
 import SingleBlog from './components/SingleBlog'
+import EditBlog from './components/EditBlog'
 
 
 export default [
   { path: '/', component: ShowBlogs},
   { path: '/add', component: AddBlog},
+  { path: '/blog/edit/:id', component: EditBlog},
   { path: '/blog/:id', component: SingleBlog},
 ]

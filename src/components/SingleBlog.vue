@@ -27,6 +27,7 @@
     created: function () {
       this.$http.get('https://vue-blog-307cc.firebaseio.com/posts/' + this.id + '.json').then(
         function (data) {
+          console.log(data.json());
           return data.json();
         }
       ).then(function (data) {

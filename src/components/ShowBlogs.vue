@@ -10,7 +10,10 @@
         <router-link v-bind:to="'/blog/' + blog['.key']">
           <button type="button" class="btn btn-outline-success btn-sm view-post btn-post">View</button>
         </router-link>
-        <button type="button" class="btn btn-outline-info btn-sm edit-post btn-post" v-on:click="editPost(blog['.key'])" >Edit</button>
+        <router-link v-bind:to="'/blog/edit/' + blog['.key']">
+          <button type="button" class="btn btn-outline-info btn-sm edit-post btn-post" >Edit</button>
+        </router-link>
+        <!--<button type="button" class="btn btn-outline-info btn-sm edit-post btn-post" v-on:click="editPost(blog['.key'])" >Edit</button>-->
         <button type="button" class="btn btn-outline-danger btn-sm delete-post btn-post" v-on:click="removePost(blog['.key'])">delete</button>
         <span class="badge badge-pill badge-secondary category" v-for="category in blog.categories">{{ category }}</span>
       </div>
@@ -57,7 +60,7 @@
         this.search = data;
       });
 //      this.blogs = posts
-      console.log(this.posts)
+//      console.log(this.posts)
     },
     computed: {
 
@@ -76,7 +79,7 @@
     mixins: [searchMixin],
     watch: {
       search: function () {
-        console.log(this.search)
+//        console.log(this.search)
       }
     }
   }

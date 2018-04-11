@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div id="add-blog">
-      <h2>Add a Post</h2>
+      <h2>Edit Post</h2>
       <form v-if="!submitted">
         <div class="form-group row">
           <label for="title" class="col-sm-2 col-form-label">Blog Title:</label>
@@ -50,24 +50,13 @@
         </div>
         <div class="form-row text-center">
           <div class="col-12">
-            <button type="button" class="col-4 text-center btn btn-outline-primary btn-sm" v-on:click.prevent="post">Add Blog</button>
+            <button type="button" class="col-4 text-center btn btn-outline-primary btn-sm" v-on:click.prevent="edit">Save</button>
           </div>
         </div>
       </form>
       <div v-if="submitted">
         <h3>Post has been added!</h3>
       </div>
-      <!--<div id="preview">-->
-        <!--<h3>Preview Blog</h3>-->
-        <!--<p>Blog title: {{ blog.title }}</p>-->
-        <!--<p>Blog content:</p>-->
-        <!--<p>{{ blog.content }}</p>-->
-        <!--<p>Blog Categories:</p>-->
-        <!--<ul>-->
-          <!--<li v-for="category in blog.categories">{{ category }}</li>-->
-        <!--</ul>-->
-        <!--<p>Author: {{ blog.author }}</p>-->
-      <!--</div>-->
     </div>
   </div>
 </template>
@@ -76,85 +65,36 @@
   import { postsRef } from '../firebase'
 
   export default {
-    name: "add-blog",
+    name: "edit-blog",
     data() {
       return {
-        blog: {
-          title: "",
-          content: "",
-          categories: [],
-          author: ""
-        },
-        content: '',
+        id: this.$route.params.id,
+        blog: {},
+        submitted: false,
         authors: ["Sanghee Lee", "Atsuko Nakayama", "Curtis Lee"],
-        submitted: false
       }
+    },
+    created: function () {
+//      this.$http.get('https://vue-blog-307cc.firebaseio.com/posts/' + this.id + '.json').then(
+//        function (data) {
+//          console.log(data.json());
+//          return data.json();
+//        }
+//      ).then(function (data) {
+//        this.blog = data;
+//      })
+      this.blog = postsRef.child(this.id);
+      console.log(this.blog)
     },
     methods: {
-      post: function () {
-        // this.$http.post('https://vue-blog-307cc.firebaseio.com/posts.json', this.blog).then(function(data) {
-          postsRef.push(this.blog).then((data) => {
-          console.log(data);
-          this.submitted = true;
-          window.location.href="/";
-        })
+      edit: function () {
+        postsRef.child(this.id).update(this.blog);
+        window.location.href="/";
       }
     },
-    watch: {
-      'blog.content': function () {
-        let el = this.$refs.content;
-//        console.log(this.blog.content);
-        console.log(el);
-//        var el = this;
-        setTimeout(function(){
-          el.style.cssText = 'height:auto; padding:0';
-          // for box-sizing other than "content-box" use:
-          // el.style.cssText = '-moz-box-sizing:content-box';
-          el.style.cssText = 'height:' + el.scrollHeight + 'px';
-        },0);
-      }
-    }
   }
 </script>
 
 <style scoped>
-
-  /*#add-blog * {*/
-    /*box-sizing: border-box;*/
-  /*}*/
-
-  /*#add-blog {*/
-    /*!*margin: 20px auto;*!*/
-    /*!*max-width: 500px;*!*/
-  /*}*/
-
-  /*label {*/
-    /*display: block;*/
-    /*margin: 20px 0 10px;*/
-  /*}*/
-
-  /*input[type="text"], textarea {*/
-    /*display: block;*/
-    /*width: 100%;*/
-  /*}*/
-
-  /*#preview {*/
-    /*padding: 10px 20px;*/
-    /*border: 1px dotted #ccc;*/
-    /*margin: 30px 0;*/
-  /*}*/
-
-  /*h3 {*/
-    /*margin-top: 10px;*/
-  /*}*/
-
-  /*#checkboxes input {*/
-    /*display: inline-block;*/
-    /*margin-right: 10px;*/
-  /*}*/
-
-  /*#checkboxes label {*/
-    /*display: inline-block;*/
-  /*}*/
 
 </style>
